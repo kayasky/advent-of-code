@@ -4,42 +4,75 @@ const input = fs.readFileSync('./day3/input.txt', 'utf8');
 (() => {
   //const schematic = input.split('\n');
   const schematic = input.split('\n');
+  let sum = 0;
 
   schematic.forEach((row, index) => {
-    console.log(`${row}\n`);
+    //console.log(`${row}\n`);
 
-    if (index > 0 && index < schematic.length - 1) {
-      //console.log(index);
-    }
     const matcher = /[^A-Za-z 0-9.]/g;
     while ((match = matcher.exec(row)) != null) {
       const charIndex = match.index;
-    
+      let toLeft = '';
+      let toRight = '';
+      let above = '';
+      let below = '';
+      let aboveLeft = '';
+      let aboveRight = '';
+      let belowLeft = '';
+      let belowRight = '';
+
       if (row.charAt(charIndex - 1) !== '.') {
-        //console.log('found a part number to the left the special character', row.charAt(charIndex - 1)); //left
-        console.log(row.charAt(charIndex - 1));
+        toLeft = checkStringBackwards(row, charIndex - 1);
       }
       if (row.charAt(charIndex + 1) !== '.') {
-       // console.log('found a part number to the right of the special character', row.charAt(charIndex + 1)); //right
+        toRight = checkStringForwards(row, charIndex + 1);
       }
       if (schematic[index - 1].charAt(charIndex) !== '.') {
-       //console.log('found a part number just above the special character', schematic[index - 1].charAt(charIndex)); //above
-      }
-      if (schematic[index + 1].charAt(charIndex) !== '.') {
-       // console.log('found a part number just below the special character', schematic[index + 1].charAt(charIndex)); //below
+        above = schematic[index - 1].charAt(charIndex);
       }
       if (schematic[index - 1].charAt(charIndex - 1) !== '.') {
-       // console.log('found a part number just above and to the left of the special character', schematic[index - 1].charAt(charIndex - 1)); //above and left
+        aboveLeft = checkStringBackwards(schematic[index - 1], charIndex - 1);
       }
       if (schematic[index - 1].charAt(charIndex + 1) !== '.') {
-       // console.log('found a part number just above and to the right of the special character', schematic[index - 1].charAt(charIndex + 1)); //above and right
+        aboveRight = checkStringForwards(schematic[index - 1], charIndex + 1);
+      }
+      if (schematic[index + 1].charAt(charIndex) !== '.') {
+        below = schematic[index + 1].charAt(charIndex);
       }
       if (schematic[index + 1].charAt(charIndex - 1) !== '.') {
-       // console.log('found a part number just below and to the left of the special character', schematic[index + 1].charAt(charIndex - 1)); //below and left
+        belowLeft = checkStringBackwards(schematic[index + 1], charIndex - 1);
       }
       if (schematic[index + 1].charAt(charIndex + 1) !== '.') {
-       // console.log('found a part number just below and to the right of the special character', schematic[index + 1].charAt(charIndex + 1)); //below and right
+        belowRight = checkStringForwards(schematic[index + 1], charIndex + 1);
       }
+
+      const aboveNum = parseInt(`${aboveLeft}${above}${aboveRight}` || '0', 10);
+      const belowNum = parseInt(`${belowLeft}${below}${belowRight}` || '0', 10);
+      const leftNum = parseInt(toLeft || '0', 10);
+      const rightNum = parseInt(toRight || '0', 10);
+
+      sum += aboveNum + belowNum + leftNum + rightNum;
     }
   });
+
+  console.log(`Sum: ${sum}`);
+
+  function checkStringBackwards(str, index) {
+    let result = '';
+    while (index >= 0 && !isNaN(parseInt(str[index], 10))) {
+      result = str[index] + result;
+      index--;
+    }
+    return result;
+  }
+
+  function checkStringForwards(str, index) {
+    let result = '';
+    while (index < str.length && !isNaN(parseInt(str[index], 10))) {
+      result += str[index];
+      index++;
+    }
+    return result;
+  }
+
 })();
