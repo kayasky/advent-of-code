@@ -4,6 +4,7 @@ const input = fs.readFileSync('./day3/input.txt', 'utf8');
 (() => {
   const schematic = input.split('\n');
   let sum = 0;
+  let gearRatiosSum = 0;
   const foundPartIndices = [];
 
   schematic.forEach((row, rowIndex) => {
@@ -83,11 +84,21 @@ const input = fs.readFileSync('./day3/input.txt', 'utf8');
         belowRightNum = parseInt(belowRight || '0', 10);
       }
 
+      // part 2
+      if (row[charIndex] === '*') {
+        const nonZeroNeighbours = [leftNum, rightNum, aboveNum, belowNum, aboveLeftNum, aboveRightNum, belowLeftNum, belowRightNum].filter((num) => num !== 0);
+        if (nonZeroNeighbours.length === 2) {
+          gearRatiosSum += nonZeroNeighbours[0] * nonZeroNeighbours[1];
+        }
+      }
+
+      // part 1
       sum += aboveNum + belowNum + leftNum + rightNum + aboveLeftNum + aboveRightNum + belowLeftNum + belowRightNum;
     }
   });
 
-  console.log(`Sum: ${sum}`);
+  console.log(`Sum of all Part Numbers: ${sum}`);
+  console.log(`Sum of all Gear Ratios: ${gearRatiosSum}`);
 
   function checkStringBackwards(row, index) {
     let result = '';
