@@ -60,6 +60,8 @@ const input = fs.readFileSync('./day3/input.txt', 'utf8');
         belowRight = checkAndPush(schematic[rowIndex + 1], charIndex + 1, 'forwards');
       }
 
+      const leftNum = parseInt(toLeft || '0', 10);
+      const rightNum = parseInt(toRight || '0', 10);
       let aboveNum = 0;
       let belowNum = 0;
       let aboveLeftNum = 0;
@@ -81,10 +83,7 @@ const input = fs.readFileSync('./day3/input.txt', 'utf8');
         belowRightNum = parseInt(belowRight || '0', 10);
       }
 
-      const leftNum = parseInt(toLeft || '0', 10);
-      const rightNum = parseInt(toRight || '0', 10);
       sum += aboveNum + belowNum + leftNum + rightNum + aboveLeftNum + aboveRightNum + belowLeftNum + belowRightNum;
-
     }
   });
 
