@@ -6,17 +6,22 @@ const input = fs.readFileSync('./day4/input.txt', 'utf8');
   const pileOfScratchCards = input.split('\n');
   let wonCards = [];
   let points = 0;
-  let totalCards = pileOfScratchCards.length;
+  let totalCards = 0;
+  const cardCount = {};
 
-  const calculatePoints = (winningNumbers, myNumbers, currentOriginalIndex, cards) => {
+  // Uses recursion to calculate the points for each card. Very inefficient. Very tricky.
+  const calculatePoints = (winningNumbers, myNumbers, cardNumber) => {
     const myWinningNumbers = [...winningNumbers.intersection(myNumbers)];
     let pointsForThisCard = 0;
     totalCards += 1;
+
     if (myWinningNumbers.length) {
       pointsForThisCard = Math.pow(2, myWinningNumbers.length - 1);
-      wonCards = cards.slice(currentOriginalIndex + 1, currentOriginalIndex + myWinningNumbers.length + 1);
+      const indexOfThisCard = pileOfScratchCards.findIndex((card) => card.startsWith(cardNumber));
+      wonCards = pileOfScratchCards.slice(indexOfThisCard + 1, indexOfThisCard + myWinningNumbers.length + 1);
       calculateAnswer(wonCards)
     }
+
     return pointsForThisCard;
   };
 
@@ -28,17 +33,18 @@ const input = fs.readFileSync('./day4/input.txt', 'utf8');
 
   function calculateAnswer(cards) {
     let totalPoints = 0;
-    cards.forEach((card, currentOriginalIndex) => {
+    cards.forEach((card) => {
       const splitCard = card.split(' | ');
       const winningNumbers = getSet(splitCard[0].substring(8));
+      const cardNumber = splitCard[0].substring(0, splitCard[0].indexOf(':'));
       const myNumbers = getSet(splitCard[1]);
-      totalPoints += calculatePoints(winningNumbers, myNumbers, currentOriginalIndex, cards);
+      totalPoints += calculatePoints(winningNumbers, myNumbers, cardNumber);
     });
     return totalPoints;
   }
-
+  console.log(cardCount);
   console.log(`I won ${points} points!`);
-  console.log(`I have ${totalCards} cards!`); // Doesn't work for actual input :(
+  console.log(`I have ${totalCards} cards!`);
 })();
 
 // part 2
