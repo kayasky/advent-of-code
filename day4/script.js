@@ -7,7 +7,6 @@ const input = fs.readFileSync('./day4/input.txt', 'utf8');
   let wonCards = [];
   let points = 0;
   let totalCards = 0;
-  const cardCount = {};
 
   // Uses recursion to calculate the points for each card. Very inefficient. Very tricky.
   const calculatePoints = (winningNumbers, myNumbers, cardNumber) => {
@@ -42,7 +41,7 @@ const input = fs.readFileSync('./day4/input.txt', 'utf8');
     });
     return totalPoints;
   }
-  console.log(cardCount);
+
   console.log(`I won ${points} points!`);
   console.log(`I have ${totalCards} cards!`);
 })();
