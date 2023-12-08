@@ -3,40 +3,39 @@ const input = fs.readFileSync('./day7/input.txt', 'utf8');
 
 (() => {
   const hands = input.split('\n');
-
-  const weights = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"]
+  const weights = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"];
+  let totalWinnings = 0;
 
   function calculateWeightOfHand(handAndBid) {
     const hand = handAndBid.split(' ')[0];
+    let weightBasedOnCardStats = 0;
+
     if (isFiveOfAKind(hand)) {
-      return 1000000;
+      weightBasedOnCardStats = 1000000;
     } else if (isFourOfAKind(hand)) {
-      return 100000;
+      weightBasedOnCardStats = 100000;
     } else if (isFullHouse(hand)) {
-      return 10000;
+      weightBasedOnCardStats = 10000;
     } else if (isThreeOfAKind(hand)) {
-      return 1000;
+      weightBasedOnCardStats = 1000;
     } else if (isTwoPairs(hand)) {
-      return 100;
+      weightBasedOnCardStats = 100;
     } else if (isOnePair(hand)) {
-      return 10;
+      weightBasedOnCardStats = 10;
     } else {
-      return 1;
+      weightBasedOnCardStats = 1;
     }
 
+    return weightBasedOnCardStats;
   }
 
-  hands.forEach(hand => console.log(calculateWeightOfHand(hand)));
+  hands.sort((hand1, hand2) => calculateWeightOfHand(hand1) > calculateWeightOfHand(hand2))
+    .forEach((hand, index) => {
+      const bid = hand.split(' ')[1];
+      totalWinnings += bid * (index + 1);
+      console.log(`Hand ${index + 1} won ${bid} with ${hand.split(' ')[0]}`);
+    });
 
-  function isFiveOfAKind(hand) {
-    const firstCard = hand[0];
-    for (let i = 1; i < hand.length; i++) {
-      if (hand[i] !== firstCard) {
-        return false;
-      }
-    }
-    return true;
-  }
 
   function calculateCardStats(hand) {
     const cardStats = {};
@@ -48,6 +47,11 @@ const input = fs.readFileSync('./day7/input.txt', 'utf8');
       }
     }
     return cardStats;
+  }
+
+  function isFiveOfAKind(hand) {
+    const cardStats = calculateCardStats(hand);
+    return Object.values(cardStats).includes(3) && Object.values(cardStats).includes(5);
   }
 
   function isFourOfAKind(hand) {
@@ -74,5 +78,7 @@ const input = fs.readFileSync('./day7/input.txt', 'utf8');
     const cardStats = calculateCardStats(hand);
     return Object.values(cardStats).includes(2);
   }
+
+  console.log(totalWinnings);
 
 })();
