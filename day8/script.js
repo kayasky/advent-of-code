@@ -12,24 +12,42 @@ const input = fs.readFileSync('./day8/input.txt', 'utf8');
     const nextLeft = node.substring(7, 10);
     const nextRight = node.substring(12, 15);
     nodesObj[nodeName] = [nextLeft, nextRight];
-  })
+  });
 
-  let numberOfSteps = 0;
-  let currentNode = nodesObj.AAA;
+  function calculateSteps(nodeName, finalNodeName) {
+    if (!nodesObj[nodeName]) return console.error('Invalid node name', nodeName);
 
-  for (let i = 0; i < instructions.length; i++) {
-    let nextNodeName = '';
+    let currentNode = nodesObj[nodeName];
+    let numberOfSteps = 0;
 
-    numberOfSteps++;
+    for (let i = 0; i < instructions.length; i++) {
+      let nextNodeName = '';
 
-    nextNodeName = instructions[i] === 'L' ? currentNode[0] : currentNode[1];
+      numberOfSteps++;
 
-    i = (nextNodeName === 'ZZZ') ? instructions.length
-      : (i === instructions.length - 1 ? -1 : i);
+      nextNodeName = instructions[i] === 'L' ? currentNode[0] : currentNode[1];
 
-    currentNode = nodesObj[nextNodeName];
+      i = (nextNodeName.endsWith(finalNodeName)) ? instructions.length
+        : (i === instructions.length - 1 ? -1 : i);
+
+      currentNode = nodesObj[nextNodeName];
+    }
+
+    return numberOfSteps;
   }
 
-  console.log({ numberOfSteps });
+  //part1();
+
+  function part1() {
+    console.log({ numberOfSteps: calculateSteps("AAA", "ZZZ") });
+  }
+
+  part2();
+
+  function part2() {
+    let currentNodes = Object.keys(nodesObj).filter(key => key.endsWith('A'));
+    let totalSteps = 0;
+    console.log({ totalSteps });
+  }
 
 })();
