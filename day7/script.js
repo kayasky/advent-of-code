@@ -73,7 +73,6 @@ const input = fs.readFileSync('./day7/input.txt', 'utf8');
     return Object.values(cardStats).includes(2);
   }
 
-
   function getBid(handAndBid) {
     return handAndBid.split(' ')[1];
   }
@@ -88,11 +87,11 @@ const input = fs.readFileSync('./day7/input.txt', 'utf8');
 
     return isFiveOfAKind(hand) ? 7
       : isFourOfAKind(hand) ? (jokerCount > 0 ? 7 : 6)
-      : isFullHouse(hand) ? (jokerCount > 0 ? 7 : 5)
-      : isThreeOfAKind(hand) ? (jokerCount > 0 ? 6 : 4)
-      : isTwoPairs(hand) ? (jokerCount === 1 ? 5 : jokerCount === 2 ? 6 : 3)
-      : isOnePair(hand) ? (jokerCount > 0 ? 4 : 2)
-      : (jokerCount === 1 ? 2 : 1);
+        : isFullHouse(hand) ? (jokerCount > 0 ? 7 : 5)
+          : isThreeOfAKind(hand) ? (jokerCount > 0 ? 6 : 4)
+            : isTwoPairs(hand) ? (jokerCount === 1 ? 5 : jokerCount === 2 ? 6 : 3)
+              : isOnePair(hand) ? (jokerCount > 0 ? 4 : 2)
+                : (jokerCount === 1 ? 2 : 1);
   }
 
   function calculateNumberofJokers(hand) {
