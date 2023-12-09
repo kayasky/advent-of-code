@@ -22,17 +22,10 @@ const input = fs.readFileSync('./day8/input.txt', 'utf8');
 
     numberOfSteps++;
 
-    if (instructions[i] === 'L') {
-      nextNodeName = currentNode[0];
-    } else {
-      nextNodeName = currentNode[1];
-    }
+    nextNodeName = instructions[i] === 'L' ? currentNode[0] : currentNode[1];
 
-    if (nextNodeName === 'ZZZ') {
-      i = instructions.length;
-    } else if (i === instructions.length - 1) {
-      i = -1;
-    }
+    i = (nextNodeName === 'ZZZ') ? instructions.length
+      : (i === instructions.length - 1 ? -1 : i);
 
     currentNode = nodesObj[nextNodeName];
   }
