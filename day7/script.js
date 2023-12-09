@@ -1,10 +1,10 @@
 const fs = require('fs');
 const input = fs.readFileSync('./day7/input.txt', 'utf8');
 
-// Part 2 ONLY
+// Part 2 ONLY, since special Jokers are not in Part 1
 (() => {
   const hands = input.split('\n');
-  const weights = ["J", "2", "3", "4", "5", "6", "7", "8", "9", "T", "Q", "K", "A"]; 
+  const weights = ["J", "2", "3", "4", "5", "6", "7", "8", "9", "T", "Q", "K", "A"];
 
   console.log(calculateWinnings());
 
@@ -85,51 +85,14 @@ const input = fs.readFileSync('./day7/input.txt', 'utf8');
   function calculateWeightOfHand(handAndBid) {
     const hand = getHand(handAndBid);
     const jokerCount = calculateNumberofJokers(hand);
-    let weightBasedOnCardStats = 0;
 
-    if (isFiveOfAKind(hand)) {
-      weightBasedOnCardStats = 7;
-    } else if (isFourOfAKind(hand)) {
-      if (jokerCount > 0) {
-        weightBasedOnCardStats = 7;
-      } else {
-        weightBasedOnCardStats = 6;
-      }
-    } else if (isFullHouse(hand)) {
-      if (jokerCount > 0) {
-        weightBasedOnCardStats = 7;
-      } else {
-        weightBasedOnCardStats = 5;
-      }
-    } else if (isThreeOfAKind(hand)) {
-      if (jokerCount > 0) {
-        weightBasedOnCardStats = 6;
-      } else {
-        weightBasedOnCardStats = 4;
-      }
-    } else if (isTwoPairs(hand)) {
-      if (jokerCount === 1) {
-        weightBasedOnCardStats = 5;
-      } else if (jokerCount === 2) {
-        weightBasedOnCardStats = 6;
-      } else {
-        weightBasedOnCardStats = 3;
-      }
-    } else if (isOnePair(hand)) {
-      if (jokerCount > 0) {
-        weightBasedOnCardStats = 4;
-      } else {
-        weightBasedOnCardStats = 2;
-      }
-    } else {
-      if (jokerCount === 1) {
-        weightBasedOnCardStats = 2;
-      } else {
-        weightBasedOnCardStats = 1;
-      }
-    }
-
-    return weightBasedOnCardStats;
+    return isFiveOfAKind(hand) ? 7
+      : isFourOfAKind(hand) ? (jokerCount > 0 ? 7 : 6)
+      : isFullHouse(hand) ? (jokerCount > 0 ? 7 : 5)
+      : isThreeOfAKind(hand) ? (jokerCount > 0 ? 6 : 4)
+      : isTwoPairs(hand) ? (jokerCount === 1 ? 5 : jokerCount === 2 ? 6 : 3)
+      : isOnePair(hand) ? (jokerCount > 0 ? 4 : 2)
+      : (jokerCount === 1 ? 2 : 1);
   }
 
   function calculateNumberofJokers(hand) {
