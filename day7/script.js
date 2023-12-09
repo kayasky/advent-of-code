@@ -4,38 +4,31 @@ const input = fs.readFileSync('./day7/input.txt', 'utf8');
 (() => {
   const hands = input.split('\n');
   const weights = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"];
-  let totalWinnings = 0;
 
-  function calculateWeightOfHand(handAndBid) {
-    const hand = handAndBid.split(' ')[0];
-    let weightBasedOnCardStats = 0;
+  console.log(calculateWinnings());
 
-    if (isFiveOfAKind(hand)) {
-      weightBasedOnCardStats = 1000000;
-    } else if (isFourOfAKind(hand)) {
-      weightBasedOnCardStats = 100000;
-    } else if (isFullHouse(hand)) {
-      weightBasedOnCardStats = 10000;
-    } else if (isThreeOfAKind(hand)) {
-      weightBasedOnCardStats = 1000;
-    } else if (isTwoPairs(hand)) {
-      weightBasedOnCardStats = 100;
-    } else if (isOnePair(hand)) {
-      weightBasedOnCardStats = 10;
-    } else {
-      weightBasedOnCardStats = 1;
-    }
+  function calculateWinnings() {
+    let totalWinnings = 0;
 
-    return weightBasedOnCardStats;
+    hands.sort((hand1, hand2) => compareHands(hand1, hand2))
+      .forEach((hand, index) => {
+        const bid = getBid(hand);
+        totalWinnings += bid * (index + 1);
+      });
+
+    return `My total winnings are ${totalWinnings}!!!`;
   }
 
-  hands.sort((hand1, hand2) => calculateWeightOfHand(hand1) > calculateWeightOfHand(hand2))
-    .forEach((hand, index) => {
-      const bid = hand.split(' ')[1];
-      totalWinnings += bid * (index + 1);
-      console.log(`Hand ${index + 1} won ${bid} with ${hand.split(' ')[0]}`);
-    });
+  function compareHands(handAndBid1, handAndBid2) {
+    const weightOfHand1 = calculateWeightOfHand(handAndBid1);
+    const weightOfHand2 = calculateWeightOfHand(handAndBid2);
 
+    if (weightOfHand1 === weightOfHand2) {
+      return compareIndividualCards(handAndBid1, handAndBid2);
+    }
+
+    return weightOfHand1 > weightOfHand2;
+  }
 
   function calculateCardStats(hand) {
     const cardStats = {};
@@ -51,7 +44,7 @@ const input = fs.readFileSync('./day7/input.txt', 'utf8');
 
   function isFiveOfAKind(hand) {
     const cardStats = calculateCardStats(hand);
-    return Object.values(cardStats).includes(3) && Object.values(cardStats).includes(5);
+    return Object.values(cardStats).includes(5);
   }
 
   function isFourOfAKind(hand) {
@@ -79,6 +72,49 @@ const input = fs.readFileSync('./day7/input.txt', 'utf8');
     return Object.values(cardStats).includes(2);
   }
 
-  console.log(totalWinnings);
+
+  function getBid(handAndBid) {
+    return handAndBid.split(' ')[1];
+  }
+
+  function getHand(handAndBid) {
+    return handAndBid.split(' ')[0];
+  }
+
+  function calculateWeightOfHand(handAndBid) {
+    const hand = getHand(handAndBid);
+    let weightBasedOnCardStats = 0;
+
+    if (isFiveOfAKind(hand)) {
+      weightBasedOnCardStats = 7;
+    } else if (isFourOfAKind(hand)) {
+      weightBasedOnCardStats = 6;
+    } else if (isFullHouse(hand)) {
+      weightBasedOnCardStats = 5;
+    } else if (isThreeOfAKind(hand)) {
+      weightBasedOnCardStats = 4;
+    } else if (isTwoPairs(hand)) {
+      weightBasedOnCardStats = 3;
+    } else if (isOnePair(hand)) {
+      weightBasedOnCardStats = 2;
+    } else {
+      weightBasedOnCardStats = 1;
+    }
+
+    return weightBasedOnCardStats;
+  }
+
+  function compareIndividualCards(handAndBid1, handAndBid2) {
+    const hand1 = getHand(handAndBid1);
+    const hand2 = getHand(handAndBid2);
+
+    for (let i = 0; i < hand1.length; i++) {
+      if (weights.indexOf(hand1[i]) > weights.indexOf(hand2[i])) {
+        return true;
+      } else if (weights.indexOf(hand1[i]) < weights.indexOf(hand2[i])) {
+        return false;
+      }
+    }
+  }
 
 })();
