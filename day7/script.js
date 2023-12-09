@@ -1,9 +1,10 @@
 const fs = require('fs');
 const input = fs.readFileSync('./day7/input.txt', 'utf8');
 
+// Part 2 ONLY
 (() => {
   const hands = input.split('\n');
-  const weights = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"];
+  const weights = ["J", "2", "3", "4", "5", "6", "7", "8", "9", "T", "Q", "K", "A"]; 
 
   console.log(calculateWinnings());
 
@@ -83,25 +84,56 @@ const input = fs.readFileSync('./day7/input.txt', 'utf8');
 
   function calculateWeightOfHand(handAndBid) {
     const hand = getHand(handAndBid);
+    const jokerCount = calculateNumberofJokers(hand);
     let weightBasedOnCardStats = 0;
 
     if (isFiveOfAKind(hand)) {
       weightBasedOnCardStats = 7;
     } else if (isFourOfAKind(hand)) {
-      weightBasedOnCardStats = 6;
+      if (jokerCount > 0) {
+        weightBasedOnCardStats = 7;
+      } else {
+        weightBasedOnCardStats = 6;
+      }
     } else if (isFullHouse(hand)) {
-      weightBasedOnCardStats = 5;
+      if (jokerCount > 0) {
+        weightBasedOnCardStats = 7;
+      } else {
+        weightBasedOnCardStats = 5;
+      }
     } else if (isThreeOfAKind(hand)) {
-      weightBasedOnCardStats = 4;
+      if (jokerCount > 0) {
+        weightBasedOnCardStats = 6;
+      } else {
+        weightBasedOnCardStats = 4;
+      }
     } else if (isTwoPairs(hand)) {
-      weightBasedOnCardStats = 3;
+      if (jokerCount === 1) {
+        weightBasedOnCardStats = 5;
+      } else if (jokerCount === 2) {
+        weightBasedOnCardStats = 6;
+      } else {
+        weightBasedOnCardStats = 3;
+      }
     } else if (isOnePair(hand)) {
-      weightBasedOnCardStats = 2;
+      if (jokerCount > 0) {
+        weightBasedOnCardStats = 4;
+      } else {
+        weightBasedOnCardStats = 2;
+      }
     } else {
-      weightBasedOnCardStats = 1;
+      if (jokerCount === 1) {
+        weightBasedOnCardStats = 2;
+      } else {
+        weightBasedOnCardStats = 1;
+      }
     }
 
     return weightBasedOnCardStats;
+  }
+
+  function calculateNumberofJokers(hand) {
+    return hand.split('').filter(card => card === 'J').length;
   }
 
   function compareIndividualCards(handAndBid1, handAndBid2) {
