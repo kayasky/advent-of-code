@@ -47,7 +47,29 @@ const input = fs.readFileSync('./day8/input.txt', 'utf8');
   function part2() {
     let currentNodes = Object.keys(nodesObj).filter(key => key.endsWith('A'));
     let totalSteps = 0;
+
+    for (let i = 0; i < instructions.length; i++) {
+      totalSteps += 1;
+      let nextNodeNames = [];
+      currentNodes.forEach(node => {
+        nextNodeNames.push(instructions[i] === 'L' ? nodesObj[node][0] : nodesObj[node][1]);
+      });
+
+      i = (nextNodeNames.filter(nextNodeName => nextNodeName.endsWith('Z')).length === nextNodeNames.length) ? instructions.length
+        : (i === instructions.length - 1 ? -1 : i);
+
+      currentNodes = nextNodeNames;
+
+    }
+
     console.log({ totalSteps });
   }
 
 })();
+
+
+/**
+ * ["11A", "22A"]
+ * 
+ * 
+ */
