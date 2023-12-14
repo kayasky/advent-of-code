@@ -8,4 +8,4 @@ bun day1/script.js
 
 So far:
 
-![12stars](https://github.com/kayasky/advent-of-code/assets/3538762/ce4ac1d0-f8a2-4f9b-8785-f6067c4677f8)
+![day8](https://github.com/kayasky/advent-of-code/assets/3538762/48415cbc-7f50-450c-90eb-cc76eef62938)
