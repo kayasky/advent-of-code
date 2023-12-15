@@ -4,17 +4,22 @@ const input = fs.readFileSync('./day9/input.txt', 'utf8');
 (() => {
   const histories = input.split('\n');
   const answer = calculateAnswer(histories);
-  console.log(answer);
+  console.log('Answer:\n', answer);
 
   function calculateAnswer(histories) {
-    let finalAnswer = 0;
+    let finalNextValue = 0;
+    let finalPreviousValue = 0;
+
     histories.forEach(history => {
       const historyInt = history.split(' ').map(Number);
       const allSequences = calculateAllSequences(historyInt);
       const nextValue = extrapolateNextValue(allSequences);
-      finalAnswer += nextValue;
+      const previousValue = extrapolatePreviousValue(allSequences);
+      finalNextValue += nextValue;
+      finalPreviousValue += previousValue;
     });
-    return finalAnswer;
+
+    return { finalNextValue, finalPreviousValue };
   }
 
   function calculateAllSequences(history) {
@@ -55,6 +60,24 @@ const input = fs.readFileSync('./day9/input.txt', 'utf8');
     });
 
     return newLastValues[newLastValues.length - 1];
+  }
+
+  function extrapolatePreviousValue(sequences) {
+    let firstValues = [];
+
+    sequences.forEach(sequence => {
+      firstValues.unshift(sequence[0]);
+    });
+
+    const newFirstValues = [0];
+
+    firstValues.forEach((value, index) => {
+      if (index) {
+        newFirstValues.push(value - newFirstValues[index - 1]);
+      }
+    });
+
+    return newFirstValues[newFirstValues.length - 1];
   }
 
 })();
