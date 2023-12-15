@@ -3,10 +3,10 @@ const input = fs.readFileSync('./day9/input.txt', 'utf8');
 
 (() => {
   const histories = input.split('\n');
-  const firstHistory = histories[2].split(' ').map(Number);
+  const firstHistory = histories[1].split(' ').map(Number);
   const allSequences = calculateAllSequences(firstHistory);
 
-  console.log(allSequences);
+  // console.log(allSequences);
 
   function calculateAllSequences(history) {
     let sequences = [history];
@@ -28,6 +28,27 @@ const input = fs.readFileSync('./day9/input.txt', 'utf8');
       }
     }
     return sequences;
+  }
+
+  extrapolateNextValue(allSequences);
+
+  function extrapolateNextValue(sequences) {
+    // build an array with the last value of each sequence
+    let lastValues = [];
+    sequences.forEach(sequence => {
+      lastValues.unshift(sequence[sequence.length - 1]);
+    });
+
+    
+    const newLastValues = [0];
+
+    lastValues.forEach((value, index) => {
+      if (index) {
+        newLastValues.push(value + newLastValues[index - 1]);
+      }
+    });
+
+    console.log(newLastValues[newLastValues.length - 1]);
   }
 
 })();
