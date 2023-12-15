@@ -3,10 +3,19 @@ const input = fs.readFileSync('./day9/input.txt', 'utf8');
 
 (() => {
   const histories = input.split('\n');
-  const firstHistory = histories[1].split(' ').map(Number);
-  const allSequences = calculateAllSequences(firstHistory);
+  const answer = calculateAnswer(histories);
+  console.log(answer);
 
-  // console.log(allSequences);
+  function calculateAnswer(histories) {
+    let finalAnswer = 0;
+    histories.forEach(history => {
+      const historyInt = history.split(' ').map(Number);
+      const allSequences = calculateAllSequences(historyInt);
+      const nextValue = extrapolateNextValue(allSequences);
+      finalAnswer += nextValue;
+    });
+    return finalAnswer;
+  }
 
   function calculateAllSequences(history) {
     let sequences = [history];
@@ -30,16 +39,13 @@ const input = fs.readFileSync('./day9/input.txt', 'utf8');
     return sequences;
   }
 
-  extrapolateNextValue(allSequences);
-
   function extrapolateNextValue(sequences) {
-    // build an array with the last value of each sequence
     let lastValues = [];
+
     sequences.forEach(sequence => {
       lastValues.unshift(sequence[sequence.length - 1]);
     });
 
-    
     const newLastValues = [0];
 
     lastValues.forEach((value, index) => {
@@ -48,7 +54,7 @@ const input = fs.readFileSync('./day9/input.txt', 'utf8');
       }
     });
 
-    console.log(newLastValues[newLastValues.length - 1]);
+    return newLastValues[newLastValues.length - 1];
   }
 
 })();
