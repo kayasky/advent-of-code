@@ -6,6 +6,6 @@ Run any day's script using [bun](https://bun.sh) or `node`. For example:
 bun day1/script.js
 ```
 
-So far:
+## Stars so far:
 
-![day8](https://github.com/kayasky/advent-of-code/assets/3538762/48415cbc-7f50-450c-90eb-cc76eef62938)
+![day9](https://github.com/kayasky/advent-of-code/assets/3538762/ce4cb922-26e5-47bf-8d48-d12b1d02c145)
