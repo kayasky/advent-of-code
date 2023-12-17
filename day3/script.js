@@ -1,5 +1,5 @@
-const fs = require('fs');
-const input = fs.readFileSync('./day3/input.txt', 'utf8');
+import { readFileSync } from 'fs';
+const input = readFileSync('./day3/input.txt', 'utf8');
 
 (() => {
   const schematic = input.split('\n');
@@ -9,6 +9,7 @@ const input = fs.readFileSync('./day3/input.txt', 'utf8');
 
   schematic.forEach((row, rowIndex) => {
     const matcher = /[^0-9.]/g;
+    let match;
     while ((match = matcher.exec(row)) != null) {
       const charIndex = match.index;
       let toLeft = '';

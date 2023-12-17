@@ -1,5 +1,5 @@
-const fs = require('fs');
-const input = fs.readFileSync('./day11/input.txt', 'utf8');
+import { readFileSync } from 'fs';
+const input = readFileSync('./day11/input.txt', 'utf8');
 
 (() => {
   let numberofGalaxies = 0;

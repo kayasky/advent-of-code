@@ -1,5 +1,5 @@
-const fs = require('fs');
-const input = fs.readFileSync('./day7/input.txt', 'utf8');
+import { readFileSync } from 'fs';
+const input = readFileSync('./day7/input.txt', 'utf8');
 
 // Part 2 ONLY, since special Jokers are not in Part 1
 (() => {

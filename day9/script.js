@@ -1,5 +1,5 @@
-const fs = require('fs');
-const input = fs.readFileSync('./day9/input.txt', 'utf8');
+import { readFileSync } from 'fs';
+const input = readFileSync('./day9/input.txt', 'utf8');
 
 (() => {
   const histories = input.split('\n');

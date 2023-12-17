@@ -1,5 +1,5 @@
-const fs = require('fs');
-const input = fs.readFileSync('./day8/input.txt', 'utf8');
+import { readFileSync } from 'fs';
+const input = readFileSync('./day8/input.txt', 'utf8');
 
 (() => {
   const inputArr = input.split('\n');
