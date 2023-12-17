@@ -3,7 +3,7 @@ const input = fs.readFileSync('./day11/input.txt', 'utf8');
 
 (() => {
   let numberofGalaxies = 0;
-  const expansionFactor = 2;
+  const expansionFactor = 1000000;
   const expandedRows = [];
   const expandedColumns = [];
   const inputGrid = input.split('\n').map(row => row.split(''));
