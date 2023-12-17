@@ -6,6 +6,7 @@ const input = fs.readFileSync('./day11/input.txt', 'utf8');
   const inputGrid = input.split('\n').map(row => row.split(''));
   const expandedGrid = expandGrid(inputGrid);
   console.log(expandedGrid.join('\n').replace(/,/g, ''));
+  let sumOfAllLengths = 0;
 
   function expandGrid(inputGrid) {
     let outputGrid = expandGridVertically(inputGrid);
@@ -13,10 +14,32 @@ const input = fs.readFileSync('./day11/input.txt', 'utf8');
     return outputGrid;
   }
 
-  // number of pairs:
-  console.log(numberofGalaxies*(numberofGalaxies-1)/2);
+  // all possible pairs:
+  let allPairs = [];
+  for (let i = 1; i <= numberofGalaxies; i++) {
+    for (let j = i + 1; j <= numberofGalaxies; j++) {
+      allPairs.push([i, j]);
+    }
+  }
+
+  allPairs.forEach(pair => {
+    const galaxy1Coords = getCoordinatesOfGalaxy(expandedGrid, pair[0]);
+    const galaxy2Coords = getCoordinatesOfGalaxy(expandedGrid, pair[1]);
+    sumOfAllLengths += Math.abs(galaxy1Coords[0] - galaxy2Coords[0]) + Math.abs(galaxy1Coords[1] - galaxy2Coords[1]);
+  });
+
+  console.log(sumOfAllLengths);
 
 })();
+
+function getCoordinatesOfGalaxy(grid, galaxyName) {
+  const galaxyXCoord = grid
+    .findIndex(row => row.findIndex(element => element === galaxyName) !== -1);
+
+  const galaxyYCoord = grid[galaxyXCoord].indexOf(galaxyName);
+
+  return [galaxyXCoord, galaxyYCoord];
+}
 
 function expandGridVertically(inputGrid) {
   let outputGrid = [];
