@@ -7,5 +7,4 @@ bun day1/script.js
 ```
 
 ## Stars so far:
-
-![day9](https://github.com/kayasky/advent-of-code/assets/3538762/ce4cb922-26e5-47bf-8d48-d12b1d02c145)
+![stars](https://github.com/kayasky/advent-of-code/assets/3538762/cf672a6a-0fa8-4d8d-bb1b-a37c7b0e29b8)
