@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 const input = readFileSync('./day4/input.txt', 'utf8');
 
-// part 1
+// parts 1 & 2
 (() => {
   const pileOfScratchCards = input.split('\n');
   let wonCards = [];
@@ -44,9 +44,4 @@ const input = readFileSync('./day4/input.txt', 'utf8');
 
   console.log(`I won ${points} points!`);
   console.log(`I have ${totalCards} cards!`);
-})();
-
-// part 2
-(() => {
-
 })();
